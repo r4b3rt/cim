@@ -4,31 +4,41 @@ import com.crossoverjie.cim.common.req.BaseRequest;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
 
 /**
- * Function: 单聊请求
+ * Function: P2P request
  *
  * @author crossoverJie
  *         Date: 2018/05/21 15:56
  * @since JDK 1.8
  */
+@Builder
 public class P2PReqVO extends BaseRequest {
 
-    @NotNull(message = "userId 不能为空")
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED, description = "消息发送者的 userId", example = "1545574049323")
-    private Long userId ;
+    @NotNull(message = "userId can't be null")
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED, description = "current send userId", example = "1545574049323")
+    private Long userId;
 
 
-    @NotNull(message = "userId 不能为空")
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED, description = "消息接收者的 userId", example = "1545574049323")
-    private Long receiveUserId ;
+    @NotNull(message = "userId can't be null")
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED, description = "message received userId", example = "1545574049323")
+    private Long receiveUserId;
 
 
 
 
-    @NotNull(message = "msg 不能为空")
+    @NotNull(message = "msg can't be null")
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED, description = "msg", example = "hello")
-    private String msg ;
+    private String msg;
+
+    @Getter
+    @Setter
+    private List<String> batchMsg;
 
     public P2PReqVO() {
     }
@@ -37,6 +47,12 @@ public class P2PReqVO extends BaseRequest {
         this.userId = userId;
         this.receiveUserId = receiveUserId;
         this.msg = msg;
+    }
+    public P2PReqVO(Long userId, Long receiveUserId, String msg, List<String> batchMsg) {
+        this.userId = userId;
+        this.receiveUserId = receiveUserId;
+        this.msg = msg;
+        this.batchMsg = batchMsg;
     }
 
     public Long getReceiveUserId() {

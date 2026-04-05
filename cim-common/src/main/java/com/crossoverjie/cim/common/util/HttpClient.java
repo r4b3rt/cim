@@ -17,14 +17,29 @@ import java.io.IOException;
  */
 public final class HttpClient {
 
-    private static MediaType mediaType = MediaType.parse("application/json");
+    private static final MediaType MEDIA_TYPE = MediaType.parse("application/json");
 
-    public static Response call(OkHttpClient okHttpClient, String params, String url) throws IOException {
-        RequestBody requestBody = RequestBody.create(mediaType, params);
+    public static Response post(OkHttpClient okHttpClient, String params, String url) throws IOException {
+        RequestBody requestBody = RequestBody.create(MEDIA_TYPE, params);
 
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
+                .build();
+
+        Response response = okHttpClient.newCall(request).execute();
+        if (!response.isSuccessful()) {
+            throw new IOException("request url [" + url + "], params [" + params + "] failed, response code: " + response.code()
+                    + ", message: " + response.message());
+        }
+
+        return response;
+    }
+
+    public static Response get(OkHttpClient okHttpClient, String url) throws IOException {
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
                 .build();
 
         Response response = okHttpClient.newCall(request).execute();
@@ -34,4 +49,5 @@ public final class HttpClient {
 
         return response;
     }
+
 }

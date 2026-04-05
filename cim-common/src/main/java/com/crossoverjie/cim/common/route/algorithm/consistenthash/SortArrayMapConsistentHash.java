@@ -1,6 +1,9 @@
 package com.crossoverjie.cim.common.route.algorithm.consistenthash;
 
 import com.crossoverjie.cim.common.data.construct.SortArrayMap;
+import com.google.common.annotations.VisibleForTesting;
+
+import java.util.Map;
 
 /**
  * Function:自定义排序 Map 实现
@@ -16,17 +19,21 @@ public class SortArrayMapConsistentHash extends AbstractConsistentHash {
     /**
      * 虚拟节点数量
      */
-    private static final int VIRTUAL_NODE_SIZE = 2 ;
+    private static final int VIRTUAL_NODE_SIZE = 2;
 
     @Override
     public void add(long key, String value) {
-        // fix https://github.com/crossoverJie/cim/issues/79
-        sortArrayMap.clear();
         for (int i = 0; i < VIRTUAL_NODE_SIZE; i++) {
             Long hash = super.hash("vir" + key + i);
-            sortArrayMap.add(hash,value);
+            sortArrayMap.add(hash, value);
         }
         sortArrayMap.add(key, value);
+    }
+
+    @Override
+    protected Map<String, String> remove(String value) {
+        sortArrayMap = sortArrayMap.remove(value);
+        return sortArrayMap;
     }
 
     @Override
@@ -34,10 +41,23 @@ public class SortArrayMapConsistentHash extends AbstractConsistentHash {
         sortArrayMap.sort();
     }
 
+    /**
+     * Used only in test.
+     * @return Return the data structure of the current algorithm.
+     */
+    @VisibleForTesting
+    public SortArrayMap getSortArrayMap() {
+        return sortArrayMap;
+    }
+
+    @Override
+    protected void clear() {
+        sortArrayMap.clear();
+    }
+
     @Override
     public String getFirstNodeValue(String value) {
         long hash = super.hash(value);
-        System.out.println("value=" + value + " hash = " + hash);
         return sortArrayMap.firstNodeValue(hash);
     }
 

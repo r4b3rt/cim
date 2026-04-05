@@ -10,7 +10,7 @@ import java.util.List;
 public enum StatusEnum {
 
     /** 成功 */
-    SUCCESS("9000", "成功"),
+    SUCCESS("9000", "Success"),
     /** 成功 */
     FALLBACK("8000", "FALL_BACK"),
     /** 参数校验失败**/
@@ -25,7 +25,7 @@ public enum StatusEnum {
     REQUEST_LIMIT("6000", "请求限流"),
 
     /** 账号不在线 */
-    OFF_LINE("7000", "你选择的账号不在线，请重新选择！"),
+    OFF_LINE("7000", "You selected user is offline!, please try again later!"),
 
     SERVER_NOT_AVAILABLE("7100", "cim server is not available, please try again later!"),
 
@@ -33,9 +33,11 @@ public enum StatusEnum {
     /** 登录信息不匹配 */
     ACCOUNT_NOT_MATCH("9100", "The User information you have used is incorrect!"),
 
+    OFFLINE_MESSAGE_STORAGE_ERROR("9200", "Offline message storage error!"),
 
+    OFFLINE_MESSAGE_FETCH_ERROR("9201", "Offline message fetch error!"),
 
-    ;
+    OFFLINE_MESSAGE_DELETE_ERROR("9202", "Offline message delete error!");
 
 
     /** 枚举值码 */

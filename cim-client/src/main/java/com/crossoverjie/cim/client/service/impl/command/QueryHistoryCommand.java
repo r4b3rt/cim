@@ -1,10 +1,10 @@
 package com.crossoverjie.cim.client.service.impl.command;
 
-import com.crossoverjie.cim.client.service.EchoService;
+import com.crossoverjie.cim.client.sdk.Event;
 import com.crossoverjie.cim.client.service.InnerCommand;
 import com.crossoverjie.cim.client.service.MsgLogger;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,19 +18,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class QueryHistoryCommand implements InnerCommand {
 
-    @Autowired
-    private MsgLogger msgLogger ;
+    @Resource
+    private MsgLogger msgLogger;
 
-    @Autowired
-    private EchoService echoService ;
+    @Resource
+    private Event event;
 
     @Override
     public void process(String msg) {
         String[] split = msg.split(" ");
-        if (split.length < 2){
+        if (split.length < 2) {
             return;
         }
         String res = msgLogger.query(split[1]);
-        echoService.echo(res);
+        event.info(res);
     }
 }

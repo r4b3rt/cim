@@ -16,7 +16,7 @@ public class RegisterInfoReqVO extends BaseRequest {
 
     @NotNull(message = "用户名不能为空")
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED, description = "userName", example = "zhangsan")
-    private String userName ;
+    private String userName;
 
     public String getUserName() {
         return userName;

@@ -14,13 +14,19 @@ import static com.crossoverjie.cim.common.enums.StatusEnum.VALIDATION_FAIL;
  */
 public class RouteInfoParseUtil {
 
-    public static RouteInfo parse(String info){
+    public static RouteInfo parse(String info) {
         try {
             String[] serverInfo = info.split(":");
-            RouteInfo routeInfo =  new RouteInfo(serverInfo[0], Integer.parseInt(serverInfo[1]),Integer.parseInt(serverInfo[2])) ;
-            return routeInfo ;
-        }catch (Exception e){
-            throw new CIMException(VALIDATION_FAIL) ;
+            return new RouteInfo(serverInfo[0], Integer.parseInt(serverInfo[1]), Integer.parseInt(serverInfo[2]));
+        } catch (Exception e) {
+            throw new CIMException(VALIDATION_FAIL);
         }
+    }
+
+    public static String parse(RouteInfo routeInfo) {
+        return routeInfo.getIp() + ":" + routeInfo.getCimServerPort() + ":" + routeInfo.getHttpPort();
+    }
+
+    private RouteInfoParseUtil() {
     }
 }

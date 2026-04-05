@@ -7,6 +7,7 @@ import com.crossoverjie.cim.route.api.vo.res.CIMServerResVO;
 import com.crossoverjie.cim.route.api.vo.res.RegisterInfoResVO;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Function: 账户服务
@@ -31,7 +32,7 @@ public interface AccountService {
      * @return true 成功 false 失败
      * @throws Exception
      */
-    StatusEnum login(LoginReqVO loginReqVO) throws Exception ;
+    StatusEnum login(LoginReqVO loginReqVO) throws Exception;
 
     /**
      * 保存路由信息
@@ -39,20 +40,20 @@ public interface AccountService {
      * @param loginReqVO 用户信息
      * @throws Exception
      */
-    void saveRouteInfo(LoginReqVO loginReqVO ,String msg) throws Exception ;
+    void saveRouteInfo(LoginReqVO loginReqVO, String msg) throws Exception;
 
     /**
      * 加载所有用户的路有关系
      * @return 所有的路由关系
      */
-    Map<Long, CIMServerResVO> loadRouteRelated() ;
+    Map<Long, CIMServerResVO> loadRouteRelated();
 
     /**
-     * 获取某个用户的路有关系
+     * Get user route info
      * @param userId
-     * @return 获取某个用户的路有关系
+     * @return route info
      */
-    CIMServerResVO loadRouteRelatedByUserId(Long userId) ;
+    Optional<CIMServerResVO> loadRouteRelatedByUserId(Long userId);
 
 
     /**
@@ -62,12 +63,15 @@ public interface AccountService {
      * @param sendUserId 发送者的ID
      * @throws Exception
      */
-    void pushMsg(CIMServerResVO cimServerResVO, long sendUserId , ChatReqVO groupReqVO) throws Exception;
+    void pushMsg(CIMServerResVO cimServerResVO, long sendUserId, ChatReqVO groupReqVO);
 
     /**
      * 用户下线
      * @param userId 下线用户ID
      * @throws Exception
      */
-    void offLine(Long userId) throws Exception;
+    void offLine(Long userId);
+
+
+
 }

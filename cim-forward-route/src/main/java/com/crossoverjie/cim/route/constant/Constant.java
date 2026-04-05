@@ -13,17 +13,30 @@ public final class Constant {
     /**
      * 账号前缀
      */
-    public final static String ACCOUNT_PREFIX = "cim-account:";
+    public static final String ACCOUNT_PREFIX = "cim-account:";
 
     /**
      * 路由信息前缀
      */
-    public final static String ROUTE_PREFIX = "cim-route:";
+    public static final String ROUTE_PREFIX = "cim-route:";
 
     /**
      * 登录状态前缀
      */
-    public final static String LOGIN_STATUS_PREFIX = "login-status";
+    public static final String LOGIN_STATUS_PREFIX = "login-status";
+
+
+    public static final class OfflineStoreMode {
+        /**
+         * redis
+         */
+        public static final String REDIS = "redis";
+
+        /**
+         * mysql
+         */
+        public static final String MYSQL = "mysql";
+    }
 
 
 }

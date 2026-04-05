@@ -1,7 +1,6 @@
 package com.crossoverjie.cim.server.server;
 
-import com.crossoverjie.cim.common.constant.Constants;
-import com.crossoverjie.cim.common.protocol.CIMRequestProto;
+import com.crossoverjie.cim.common.protocol.Request;
 import com.crossoverjie.cim.server.api.vo.req.SendMsgReqVO;
 import com.crossoverjie.cim.server.init.CIMServerInitializer;
 import com.crossoverjie.cim.server.util.SessionSocketHolder;
@@ -77,23 +76,32 @@ public class CIMServer {
 
     /**
      * Push msg to client.
-     * @param sendMsgReqVO 消息
+     * @param sendMsgReqVO message body
      */
-    public void sendMsg(SendMsgReqVO sendMsgReqVO){
+    public void sendMsg(SendMsgReqVO sendMsgReqVO) {
         NioSocketChannel socketChannel = SessionSocketHolder.get(sendMsgReqVO.getUserId());
 
         if (null == socketChannel) {
             log.error("client {} offline!", sendMsgReqVO.getUserId());
             return;
         }
-        CIMRequestProto.CIMReqProtocol protocol = CIMRequestProto.CIMReqProtocol.newBuilder()
+
+        Request.Builder requestBuilder = Request.newBuilder()
                 .setRequestId(sendMsgReqVO.getUserId())
-                .setReqMsg(sendMsgReqVO.getMsg())
-                .setType(Constants.CommandType.MSG)
-                .build();
+                .putAllProperties(sendMsgReqVO.getProperties())
+                .setCmd(sendMsgReqVO.getCmd());
+
+        boolean isBatch = sendMsgReqVO.getBatchMsg() != null && sendMsgReqVO.getBatchMsg().size() > 0;
+        if (isBatch) {
+            requestBuilder.addAllBatchReqMsg(sendMsgReqVO.getBatchMsg());
+        } else {
+            requestBuilder.setReqMsg(sendMsgReqVO.getMsg());
+        }
+
+        Request protocol = requestBuilder.build();
 
         ChannelFuture future = socketChannel.writeAndFlush(protocol);
         future.addListener((ChannelFutureListener) channelFuture ->
-                log.info("server push msg:[{}]", sendMsgReqVO.toString()));
+                log.info("server push {} msg:[{}], socketChannel:{}", isBatch ? "batch" : "single", sendMsgReqVO, socketChannel));
     }
 }

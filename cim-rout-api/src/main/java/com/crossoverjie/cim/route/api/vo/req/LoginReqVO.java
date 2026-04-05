@@ -1,6 +1,7 @@
 package com.crossoverjie.cim.route.api.vo.req;
 
 import com.crossoverjie.cim.common.req.BaseRequest;
+import lombok.AllArgsConstructor;
 
 /**
  * Function:
@@ -9,9 +10,10 @@ import com.crossoverjie.cim.common.req.BaseRequest;
  *         Date: 2018/12/23 22:30
  * @since JDK 1.8
  */
-public class LoginReqVO extends BaseRequest{
-    private Long userId ;
-    private String userName ;
+@AllArgsConstructor
+public class LoginReqVO extends BaseRequest {
+    private Long userId;
+    private String userName;
 
     public Long getUserId() {
         return userId;
